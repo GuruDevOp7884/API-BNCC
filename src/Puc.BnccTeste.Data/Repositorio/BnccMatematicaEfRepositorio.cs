@@ -27,64 +27,8 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
         {
             var lista = _Db.BnccMatematicaEfs.ToList();
             try
-            {            
-                if(matematica)
-                {
-                    var lista2 = lista;
-                    if (todos)
-                    {
-                        return lista2;
-                    }
-                    if (primeiroAno)
-                    {
-                        lista2 = lista.Where(x => x.PrimeiroEf == primeiroAno).ToList();
-                        return lista2;
-                    }                                 
-                    
-                    if (segundoAno)
-                    {
-                        lista2 = lista.Where(x => x.SegundoEf == segundoAno).ToList();
-                        return lista2;
-                    }
-
-                    if (terceiroAno)
-                    {
-                        lista2 = lista.Where(x => x.TerceiroEf == terceiroAno).ToList();
-                        return lista2;
-                    }
-                    if (quartoAno)
-                    {
-                        lista2 = lista.Where(x => x.QuartoEf == quartoAno).ToList();
-                        return lista2;
-                    }
-                    if (quintoAno)
-                    {
-                        lista2 = lista.Where(x => x.QuintoEf == quintoAno).ToList();
-                        return lista2;
-                    }
-                    if (sextoAno)
-                    {
-                        lista2 = lista.Where(x => x.SextoEf == sextoAno).ToList();
-                        return lista2;
-                    } 
-                    if (setimoAno)
-                    {
-                        lista2 = lista.Where(x => x.SetimoEf == setimoAno).ToList();
-                        return lista2;
-                    } 
-                    if (oitavoAno)
-                    {
-                        lista2 = lista.Where(x => x.OitavoEf == oitavoAno).ToList();
-                        return lista2;
-                    }
-                    if (nonoAno)
-                    {
-                        lista2 = lista.Where(x => x.NonoEf == nonoAno).ToList();
-                        return lista2;
-                    }
-                    
-
-                }
+            {
+                return lista;
             }
             catch (Exception ex)
             {
@@ -93,17 +37,24 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
 
             return lista = null;
 
+        }       
+
+        public IList<BnccMatematicaEf> ListarTodos()
+        {
+            var listar = _DbSet.ToList();
+            try
+            {
+                if(listar != null)
+                {
+                    return listar;  
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                listar = null;
+            }
+            return listar;
         }
     }
 }
-//var lista = _Db.BnccMatematicaEfs.ToList();
-//try
-//{
-//    if (matematica)
-//    {
-//        //if(primeiroAno)
-//        //{
-//        //    lista.Select(x => x.PrimeiroEf).ToList();
-//        //                    
-//        var lista2 = lista.Where(x => x.PrimeiroEf == true).ToList();
-//        return lista2;

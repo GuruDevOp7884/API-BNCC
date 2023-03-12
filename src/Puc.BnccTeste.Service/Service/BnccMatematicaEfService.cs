@@ -19,7 +19,57 @@ namespace Puc.BnccTeste.Service.Service
 
         public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
-            return _matRepo.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno).ToList();
+            try
+            {
+                if (matematica)
+                {
+                    var listagem = _matRepo.ListarTodos().ToList();
+                    foreach (var item in listagem)
+                    {
+                        if (todos)
+                            return _matRepo.ListarTodos().ToList();
+
+                        if (primeiroAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.PrimeiroEf != false).ToList();
+
+                        if (segundoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.SegundoEf != false).ToList();
+
+                        if (terceiroAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.TerceiroEf != false).ToList();
+
+                        if (quartoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.QuartoEf != false).ToList();
+
+                        if (quintoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.QuintoEf != false).ToList();
+
+                        if (sextoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.SextoEf != false).ToList();
+
+                        if (setimoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.SetimoEf != false).ToList();
+
+                        if (oitavoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.OitavoEf != false).ToList();
+
+                        if (nonoAno)
+                            listagem = _matRepo.ListarTodos().Where(x => x.NonoEf != false).ToList();
+
+                    }
+
+                    return listagem;
+                }
+              
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+
+            return null;
+
         }
 
         public IList<BnccMatematicaEf> ListarTodos()

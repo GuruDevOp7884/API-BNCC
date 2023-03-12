@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-
+ 
 namespace Puc.BnccTeste.Infra.Data.Repositorio
 {
     public class RepositorioBase<TEntity> : IRepositorio<TEntity> where TEntity : class
@@ -45,5 +45,12 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
         {
             return _DbSet.Find(id);
         }
+
+        public bool Inserir(TEntity entidade)
+        {
+           _DbSet.Add(entidade);
+            return _Db.SaveChanges() > 0;
+        }
+
     }
 }

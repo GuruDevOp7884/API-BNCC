@@ -9,6 +9,18 @@ namespace Puc.BnccTeste.Infra.Data.Interface
 {
     public interface IBnccMatematicaEfRepositorio : IRepositorio<BnccMatematicaEf>
     {
-        IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno);
+        IList<BnccMatematicaEf> ListarAnosDaMateria(
+            bool matematica,
+            bool todos,
+            bool primeiroAno,
+            bool segundoAno, 
+            bool terceiroAno,
+            bool quartoAno, 
+            bool quintoAno,
+            bool sextoAno, 
+            bool setimoAno, 
+            bool oitavoAno,
+            bool nonoAno
+            );
     }
 }
