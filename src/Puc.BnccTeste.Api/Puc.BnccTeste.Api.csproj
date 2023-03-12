@@ -9,11 +9,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Puc.BnccTeste.Domain\Puc.BnccTeste.Domain.csproj" />
+    <ProjectReference Include="..\Puc.BnccTeste.Infra.CrossCutting.DI\Puc.BnccTeste.Infra.CrossCutting.DI.csproj" />
+    <ProjectReference Include="..\Puc.BnccTeste.Service\Puc.BnccTeste.Service.csproj" />
   </ItemGroup>
 
 </Project>

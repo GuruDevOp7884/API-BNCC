@@ -17,7 +17,7 @@ public partial class BnccMatematicaEf
 
     public string Habilidades { get; set; } = null!;
 
-    public string CodHab { get; set; } = null!;
+    public string? CodHab { get; set; }
 
     public string DescricaoCod { get; set; } = null!;
 

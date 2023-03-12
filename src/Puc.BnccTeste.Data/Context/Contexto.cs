@@ -13,7 +13,7 @@ namespace Puc.BnccTeste.Infra.Data.Context
         public Contexto(DbContextOptions<Contexto> options) 
             : base(options) 
         {
-        }
+        }       
 
         public virtual DbSet<BnccArtesEf> BnccArtesEfs { get; set; }
 
@@ -51,6 +51,19 @@ namespace Puc.BnccTeste.Infra.Data.Context
 
         public virtual DbSet<EuOutroNosEdInf> EuOutroNosEdInfs { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        {
+            if (!builder.IsConfigured)
+            {
+                builder.UseSqlServer(ObterStringConexao());
+                base.OnConfiguring(builder);
+            }
+        }
+
+        public string ObterStringConexao()
+        {
+            return "Server=.\\SQLExpress;Database=bncc_database;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False";
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
