@@ -17,9 +17,9 @@ namespace Puc.BnccTeste.Service.Service
             _matRepo = matRepo;
         }
 
-        public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
-            return _matRepo.ListarAnosDaMateria(matematica, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno).ToList();
+            return _matRepo.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno).ToList();
         }
 
         public IList<BnccMatematicaEf> ListarTodos()
