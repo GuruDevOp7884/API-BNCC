@@ -21,46 +21,45 @@ namespace Puc.BnccTeste.Service.Service
         {
             try
             {
+                var listagem = _matRepo.ListarTodos();
+
                 if (matematica)
                 {
-                    var listagem = _matRepo.ListarTodos().ToList();
-                    foreach (var item in listagem)
-                    {
+                    if (listagem != null) 
+                    {                    
                         if (todos)
                             return _matRepo.ListarTodos().ToList();
 
                         if (primeiroAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.PrimeiroEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.PrimeiroEf != false);
 
                         if (segundoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.SegundoEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.SegundoEf != false);
 
                         if (terceiroAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.TerceiroEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.TerceiroEf != false);
 
                         if (quartoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.QuartoEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.QuartoEf != false);
 
                         if (quintoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.QuintoEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.QuintoEf != false);
 
                         if (sextoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.SextoEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.SextoEf != false);
 
                         if (setimoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.SetimoEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.SetimoEf != false);
 
                         if (oitavoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.OitavoEf != false).ToList();
+                            listagem = _matRepo.ListarTodos().Where(x => x.OitavoEf != false);
 
                         if (nonoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.NonoEf != false).ToList();
+                                listagem = _matRepo.ListarTodos().Where(x => x.NonoEf != false);                    
 
+                        return listagem.ToList();
                     }
-
-                    return listagem;
-                }
-              
+                }              
             }
             catch (Exception ex)
             {
@@ -78,6 +77,7 @@ namespace Puc.BnccTeste.Service.Service
             try
             {
                 lista = _matRepo.ListarTodos().ToList();
+                return lista;
             }
             catch (Exception ex)
             {

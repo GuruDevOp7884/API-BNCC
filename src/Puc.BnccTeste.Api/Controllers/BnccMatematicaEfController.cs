@@ -27,7 +27,7 @@ namespace Puc.BnccTeste.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Json(null) ;
+                return Json(null);
             }
         }
 
