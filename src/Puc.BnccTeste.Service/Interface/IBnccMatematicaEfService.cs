@@ -10,7 +10,19 @@ namespace Puc.BnccTeste.Service.Interface
     public interface IBnccMatematicaEfService 
     {
         IList<BnccMatematicaEf> ListarTodos();
-        IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno);
+        IList<BnccMatematicaEf> ListarAnosDaMateria(
+            bool matematica, 
+            bool todos,
+            bool primeiroAno, 
+            bool segundoAno, 
+            bool terceiroAno,
+            bool quartoAno, 
+            bool quintoAno, 
+            bool sextoAno, 
+            bool setimoAno,
+            bool oitavoAno,
+            bool nonoAno
+            );
         BnccMatematicaEf ObterPeloId(int id);
         BnccMatematicaEf ObterPeloCodHab(string cod);
     }

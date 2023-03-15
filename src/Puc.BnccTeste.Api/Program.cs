@@ -17,13 +17,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region DI
 builder.Services.AddScoped<IBnccMatematicaEfRepositorio, BnccMatematicaEfRepositorio>();
 builder.Services.AddScoped<IBnccMatematicaEfService, BnccMatematicaEfService>();
+#endregion
 
+#region DB
 builder.Services.AddDbContext<Contexto>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BnccTesteConnection"));
 });
+#endregion
+
+#region Cors
+builder.Services.AddCors();
+#endregion
 
 var app = builder.Build();
 
@@ -34,6 +42,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(c =>
+{
+    c.AllowAnyOrigin();
+    c.AllowAnyHeader();
+    c.AllowAnyMethod();
+});
 
 app.UseHttpsRedirection();
 

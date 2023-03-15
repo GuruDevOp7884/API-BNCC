@@ -5,6 +5,7 @@ using Puc.BnccTeste.Infra.Data.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,37 +22,39 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
             _Db = contexto;
             _DbSet = _Db.Set<BnccMatematicaEf>();
         }
-
-        public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+                
+        public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
-            List<BnccMatematicaEf> lista = new List<BnccMatematicaEf>();
+            var lista = _Db.BnccMatematicaEfs.ToList();
             try
-            {            
-               if(matematica)
-                {
-                    if(primeiroAno)
-                    {
-                        lista.Select(x => x.PrimeiroEf).ToList();
-                    }
-                    //lista = _DbSet.Where(x =>
-                    //x.PrimeiroEf == primeiroAno ||
-                    //x.SegundoEf == segundoAno ||
-                    //x.TerceiroEf == terceiroAno ||
-                    //x.QuartoEf == quartoAno ||
-                    //x.QuintoEf == quintoAno ||
-                    //x.SextoEf == sextoAno ||
-                    //x.SetimoEf == setimoAno ||
-                    //x.OitavoEf == oitavoAno ||
-                    //x.NonoEf == nonoAno).ToList();
-                }                    
+            {
+                return lista;
             }
             catch (Exception ex)
             {
                 lista = null;
             }
 
-            return lista;
+            return lista = null;
 
+        }       
+
+        public IList<BnccMatematicaEf> ListarTodos()
+        {
+            var listar = _DbSet.ToList();
+            try
+            {
+                if(listar != null)
+                {
+                    return listar;  
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                listar = null;
+            }
+            return listar;
         }
     }
 }

@@ -17,16 +17,17 @@ namespace Puc.BnccTeste.Api.Controllers
 
 
         [HttpPost("/api/ListarAnosDaMateria")]
-        public JsonResult ListarAnosDaMateria(bool matematica = false, bool primeiroAno = false, bool segundoAno = false, bool terceiroAno = false, bool quartoAno = false, bool quintoAno = false, bool sextoAno = false, bool setimoAno = false, bool oitavoAno = false, bool nonoAno = false)
+        public JsonResult ListarAnosDaMateria(bool matematica ,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             try
             {
-                var result = _service.ListarAnosDaMateria(matematica, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
-                return Json(result.ToList());
+                var result = _service.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);                   
+
+                return Json(result);
             }
             catch (Exception ex)
             {
-                return Json(() => { return BadRequest("Erro ao listar"); });
+                return Json(null);
             }
         }
 
