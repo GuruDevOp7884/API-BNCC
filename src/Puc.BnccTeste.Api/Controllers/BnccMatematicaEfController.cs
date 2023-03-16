@@ -16,7 +16,7 @@ namespace Puc.BnccTeste.Api.Controllers
         }
 
 
-        [HttpPost("/api/ListarAnosDaMateria")]
+        [HttpGet("/api/ListarAnosDaMateria")]
         public JsonResult ListarAnosDaMateria(bool matematica ,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             try
