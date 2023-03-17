@@ -16,12 +16,12 @@ namespace Puc.BnccTeste.Api.Controllers
         }
 
 
-        [HttpPost("/api/ListarAnosDaMateria")]
+        [HttpGet("/api/ListarAnosDaMateria")]
         public JsonResult ListarAnosDaMateria(bool matematica ,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             try
             {
-                var result = _service.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);                   
+                var result = _service.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
 
                 return Json(result);
             }
