@@ -25,38 +25,27 @@ namespace Puc.BnccTeste.Service.Service
 
                 if (matematica)
                 {
-                    if (listagem != null) 
-                    {                    
-                        if (todos)
-                            return _matRepo.ListarTodos().ToList();
-
-                        if (primeiroAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.PrimeiroEf != false);
-
-                        if (segundoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.SegundoEf != false);
-
-                        if (terceiroAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.TerceiroEf != false);
-
-                        if (quartoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.QuartoEf != false);
-
-                        if (quintoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.QuintoEf != false);
-
-                        if (sextoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.SextoEf != false);
-
-                        if (setimoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.SetimoEf != false);
-
-                        if (oitavoAno)
-                            listagem = _matRepo.ListarTodos().Where(x => x.OitavoEf != false);
-
-                        if (nonoAno)
-                                listagem = _matRepo.ListarTodos().Where(x => x.NonoEf != false);                    
-
+                    if(listagem != null)
+                    { 
+                        if(todos)                        
+                            return listagem.ToList();
+                        
+                        if(primeiroAno || segundoAno ||  terceiroAno || quartoAno || quintoAno || sextoAno || setimoAno || oitavoAno || nonoAno)
+                        { 
+                            return listagem.Where(
+                                x => x.PrimeiroEf == primeiroAno && x.PrimeiroEf != false || 
+                                x.SegundoEf == segundoAno && x.SegundoEf != false ||
+                                x.TerceiroEf == terceiroAno && x.TerceiroEf != false ||
+                                x.QuartoEf == quartoAno && x.QuartoEf != false || 
+                                x.QuintoEf == quintoAno && x.QuintoEf != false || 
+                                x.SextoEf == sextoAno && x.SextoEf != false ||
+                                x.SetimoEf == setimoAno && x.SetimoEf != false || 
+                                x.OitavoEf == oitavoAno && x.OitavoEf != false ||
+                                x.NonoEf == nonoAno && x.NonoEf != false  
+                                )
+                                .ToList();
+                        }
+                    
                         return listagem.ToList();
                     }
                 }              
