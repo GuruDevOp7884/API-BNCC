@@ -21,14 +21,14 @@ namespace Puc.BnccTeste.Service.Service
         {
             try
             {
-                var listagem = _matRepo.ListarTodos();
+                var listagem = _matRepo.ListarTodos().ToList();
 
                 if (matematica)
                 {
                     if(listagem != null)
                     { 
                         if(todos)                        
-                            return listagem.ToList();
+                            return listagem;
                         
                         if(primeiroAno || segundoAno ||  terceiroAno || quartoAno || quintoAno || sextoAno || setimoAno || oitavoAno || nonoAno)
                         { 
@@ -41,13 +41,12 @@ namespace Puc.BnccTeste.Service.Service
                                 x.SextoEf == sextoAno && x.SextoEf != false ||
                                 x.SetimoEf == setimoAno && x.SetimoEf != false || 
                                 x.OitavoEf == oitavoAno && x.OitavoEf != false ||
-                                x.NonoEf == nonoAno && x.NonoEf != false  
-                                )
+                                x.NonoEf == nonoAno && x.NonoEf != false)
                                 .ToList();
                         }
                     
-                        return listagem.ToList();
-                    }
+                        return listagem;
+                    }                    
                 }              
             }
             catch (Exception ex)

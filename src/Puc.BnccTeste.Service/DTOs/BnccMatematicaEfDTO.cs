@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Puc.BnccTeste.Domain.DTOs
+namespace Puc.BnccTeste.Service.DTOs
 {
     public class BnccMatematicaEfDTO
     {
