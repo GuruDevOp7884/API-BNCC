@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Puc.BnccTeste.Domain\Puc.BnccTeste.Domain.csproj" />
     <ProjectReference Include="..\Puc.BnccTeste.Infra.CrossCutting.DI\Puc.BnccTeste.Infra.CrossCutting.DI.csproj" />
     <ProjectReference Include="..\Puc.BnccTeste.Service\Puc.BnccTeste.Service.csproj" />
   </ItemGroup>
