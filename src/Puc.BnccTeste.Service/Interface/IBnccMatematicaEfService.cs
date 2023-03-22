@@ -22,7 +22,7 @@ namespace Puc.BnccTeste.Service.Interface
             bool setimoAno,
             bool oitavoAno,
             bool nonoAno
-            );
+            );       
         BnccMatematicaEf ObterPeloId(int id);
         BnccMatematicaEf ObterPeloCodHab(string cod);
     }

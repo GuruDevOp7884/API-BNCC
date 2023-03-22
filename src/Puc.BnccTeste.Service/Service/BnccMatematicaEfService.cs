@@ -1,11 +1,6 @@
 ﻿using Puc.BnccTeste.Domain.Entidade;
 using Puc.BnccTeste.Infra.Data.Interface;
 using Puc.BnccTeste.Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Puc.BnccTeste.Service.Service
 {
@@ -15,7 +10,7 @@ namespace Puc.BnccTeste.Service.Service
         public BnccMatematicaEfService(IBnccMatematicaEfRepositorio matRepo)
         {
             _matRepo = matRepo;
-        }
+        }              
 
         public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
@@ -43,8 +38,8 @@ namespace Puc.BnccTeste.Service.Service
                                 x.OitavoEf == oitavoAno && x.OitavoEf != false ||
                                 x.NonoEf == nonoAno && x.NonoEf != false)
                                 .ToList();
-                        }
-                    
+                        }                  
+
                         return listagem;
                     }                    
                 }              
@@ -56,7 +51,6 @@ namespace Puc.BnccTeste.Service.Service
             }
 
             return null;
-
         }
 
         public IList<BnccMatematicaEf> ListarTodos()
