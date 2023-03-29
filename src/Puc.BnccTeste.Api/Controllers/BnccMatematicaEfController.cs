@@ -16,19 +16,11 @@ namespace Puc.BnccTeste.Api.Controllers
     {
         private readonly IBnccMatematicaEfService _matematica;
         private readonly IBnccLinguaPortuguesaEfService _portugues;
-        public BnccMatematicaEfController(IBnccMatematicaEfService matematica,
-                                          IBnccLinguaPortuguesaEfService portugues
-
-
-
-
-
-        )
+        public BnccMatematicaEfController(IBnccMatematicaEfService matematica, IBnccLinguaPortuguesaEfService portugues)
         {
             _matematica = matematica;
             _portugues = portugues;
         }
-
 
         [HttpGet("/api/ListarAnosDaMateria")]
         public JsonResult ListarAnosDaMateria(string materia,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
@@ -95,14 +87,11 @@ namespace Puc.BnccTeste.Api.Controllers
         {
             using (var workbook = new XLWorkbook())
             {
-
                 dynamic result = "";
                 if(materia == "matematica")
                     result = _matematica.ListarAnosMatematica(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
                 if (materia == "portugues")
                     result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
-
-               
 
                 var planilha = workbook.AddWorksheet("Bncc");
                 var linha = 3;
