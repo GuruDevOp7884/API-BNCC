@@ -12,22 +12,22 @@ namespace Puc.BnccTeste.Service.Service
             _matRepo = matRepo;
         }              
 
-        public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public IList<BnccMatematicaEf> ListarAnosMatematica(string materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             try
             {
-                var listagem = _matRepo.ListarTodos().ToList();
+                var lista = _matRepo.ListarTodos().ToList();
 
-                if (matematica)
+                if (materia == "matematica")
                 {
-                    if(listagem != null)
+                    if(lista != null)
                     { 
                         if(todos)                        
-                            return listagem;
+                            return lista;
                         
                         if(primeiroAno || segundoAno ||  terceiroAno || quartoAno || quintoAno || sextoAno || setimoAno || oitavoAno || nonoAno)
                         { 
-                            return listagem.Where(
+                            return lista.Where(
                                 x => x.PrimeiroEf == primeiroAno && x.PrimeiroEf != false || 
                                 x.SegundoEf == segundoAno && x.SegundoEf != false ||
                                 x.TerceiroEf == terceiroAno && x.TerceiroEf != false ||
@@ -40,7 +40,7 @@ namespace Puc.BnccTeste.Service.Service
                                 .ToList();
                         }                  
 
-                        return listagem;
+                        return lista;
                     }                    
                 }              
             }
@@ -58,8 +58,7 @@ namespace Puc.BnccTeste.Service.Service
             List<BnccMatematicaEf> lista = new List<BnccMatematicaEf>();
             try
             {
-                lista = _matRepo.ListarTodos().ToList();
-                return lista;
+                lista = _matRepo.ListarTodos().ToList();               
             }
             catch (Exception ex)
             {

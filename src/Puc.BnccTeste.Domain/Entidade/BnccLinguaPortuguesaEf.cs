@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Puc.BnccTeste.Domain.Entidade;
 
-public partial class BnccLinguaPortuguesaEf
+public class BnccLinguaPortuguesaEf
 {
     public int Column1 { get; set; }
 

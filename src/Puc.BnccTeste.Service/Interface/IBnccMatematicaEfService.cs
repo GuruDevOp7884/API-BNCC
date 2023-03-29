@@ -10,8 +10,8 @@ namespace Puc.BnccTeste.Service.Interface
     public interface IBnccMatematicaEfService 
     {
         IList<BnccMatematicaEf> ListarTodos();
-        IList<BnccMatematicaEf> ListarAnosDaMateria(
-            bool matematica, 
+        IList<BnccMatematicaEf> ListarAnosMatematica(
+            string materia, 
             bool todos,
             bool primeiroAno, 
             bool segundoAno, 
