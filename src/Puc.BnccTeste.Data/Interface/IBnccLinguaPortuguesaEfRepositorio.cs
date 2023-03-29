@@ -9,5 +9,6 @@ namespace Puc.BnccTeste.Infra.Data.Interface
 {
     public interface IBnccLinguaPortuguesaEfRepositorio : IRepositorio<BnccLinguaPortuguesaEf>
     {
+        IList<BnccLinguaPortuguesaEf> ListarAnosPortugues(bool materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno);
     }
 }

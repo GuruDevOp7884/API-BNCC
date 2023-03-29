@@ -23,7 +23,7 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
             _DbSet = _Db.Set<BnccMatematicaEf>();
         }
                 
-        public IList<BnccMatematicaEf> ListarAnosDaMateria(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public IList<BnccMatematicaEf> ListarAnosMatematica(string materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             var lista = _Db.BnccMatematicaEfs.ToList();
             try

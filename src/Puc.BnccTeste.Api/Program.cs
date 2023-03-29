@@ -20,6 +20,8 @@ builder.Services.AddSwaggerGen();
 #region DI
 builder.Services.AddScoped<IBnccMatematicaEfRepositorio, BnccMatematicaEfRepositorio>();
 builder.Services.AddScoped<IBnccMatematicaEfService, BnccMatematicaEfService>();
+builder.Services.AddScoped<IBnccLinguaPortuguesaEfService, BnccLinguaPortuguesaEfService>();
+builder.Services.AddScoped<IBnccLinguaPortuguesaEfRepositorio, BnccLinguaPortuguesaEfRepositorio>();
 #endregion
 
 #region DB

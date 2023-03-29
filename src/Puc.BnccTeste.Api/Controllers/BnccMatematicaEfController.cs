@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Puc.BnccTeste.Service.DTOs;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using System.Dynamic;
 
 namespace Puc.BnccTeste.Api.Controllers
 {
@@ -12,62 +14,108 @@ namespace Puc.BnccTeste.Api.Controllers
     [ApiController]
     public class BnccMatematicaEfController : Controller
     {
-        private readonly IBnccMatematicaEfService _service;
-        public BnccMatematicaEfController(IBnccMatematicaEfService service)
+        private readonly IBnccMatematicaEfService _matematica;
+        private readonly IBnccLinguaPortuguesaEfService _portugues;
+        public BnccMatematicaEfController(IBnccMatematicaEfService matematica,
+                                          IBnccLinguaPortuguesaEfService portugues
+
+
+
+
+
+        )
         {
-            _service = service;
+            _matematica = matematica;
+            _portugues = portugues;
         }
 
 
         [HttpGet("/api/ListarAnosDaMateria")]
-        public JsonResult ListarAnosDaMateria(bool matematica ,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public JsonResult ListarAnosDaMateria(string materia,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             try
             {        
-                var lista = new List<BnccMatematicaEfDTO>();
-                var result = _service.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
-
-                foreach (var item in result)
+                if(materia == "matematica")
                 {
-                    lista.Add(new BnccMatematicaEfDTO
+                    var lista = new List<BnccMatematicaEfDTO>();
+                    var result = _matematica.ListarAnosMatematica(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+
+                    foreach (var item in result)
                     {
-                        Column1 = item.Column1,
-                        Componente = item.Componente,
-                        AnoFaixa = item.AnoFaixa,
-                        UnidadesTematicas = item.UnidadesTematicas,
-                        ObjetosConhecimento = item.ObjetosConhecimento,
-                        Habilidades = item.Habilidades,
-                        CodHab = item.CodHab,
-                        DescricaoCod = item.DescricaoCod
-                    });
+                        lista.Add(new BnccMatematicaEfDTO
+                        {
+                            Column1 = item.Column1,
+                            Componente = item.Componente,
+                            AnoFaixa = item.AnoFaixa,
+                            UnidadesTematicas = item.UnidadesTematicas,
+                            ObjetosConhecimento = item.ObjetosConhecimento,
+                            Habilidades = item.Habilidades,
+                            CodHab = item.CodHab,
+                            DescricaoCod = item.DescricaoCod
+                        });
+                    }
+
+                    return Json(lista);
+                }        
+
+                else if(materia == "portugues")
+                {
+                    var lista = new List<BnccLinguaPortuguesaEfDTO>();
+                    var result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+
+                    foreach (var item in result)
+                    {
+                        lista.Add(new BnccLinguaPortuguesaEfDTO
+                        {
+                            Column1 = item.Column1,
+                            Componente = item.Componente,
+                            AnoFaixa = item.AnoFaixa,
+                            CampoAtuacao = item.CampoAtuacao,
+                            PraticasLinguagem = item.PraticasLinguagem,
+                            ObjetosConhecimento = item.ObjetosConhecimento,
+                            Habilidades = item.Habilidades,
+                            CodHab = item.CodHab,
+                            DescricaoCod = item.DescricaoCod
+                        });
+                    }
+
+                    return Json(lista);
                 }
 
-                return Json(lista);
+                return Json("Nenhum registro encontrado!");
             }
             catch (Exception ex)
             {
-                return Json("Ocorreu algo inesperado");
+                return Json("Ocorreu algo inesperado!");
             }
         }
 
         [HttpGet("/api/Excel")]
-        public ActionResult Excel(bool matematica, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public ActionResult Excel(string materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             using (var workbook = new XLWorkbook())
             {
-                var result = _service.ListarAnosDaMateria(matematica, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+
+                dynamic result = "";
+                if(materia == "matematica")
+                    result = _matematica.ListarAnosMatematica(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+                if (materia == "portugues")
+                    result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+
+               
+
                 var planilha = workbook.AddWorksheet("Bncc");
                 var linha = 3;
                 var BnccImage = @"C:\Users\Guru\Desktop\BannerBNcc.png";                
 
                 planilha.AddPicture(BnccImage).MoveTo(planilha.Cell(1, 1)).ScaleWidth(1.045, true);
 
-                planilha.Cell(2, 1).Value = "Matematica";
+                planilha.Cell(2, 1).Value = (materia == "matematica") ? "Matemática" : "Português";
                 planilha.Cell(2, 1).Worksheet.Range("A2", "G2").Merge();
 
                 planilha.Cell(linha, 1).Value = "Componente";
                 planilha.Cell(linha, 2).Value = "AnoFaixa";
-                planilha.Cell(linha, 3).Value = "UnidadesTematicas";
+                planilha.Cell(linha, 3).Value = (materia == "matematica") ? "UnidadesTematicas" : "Campo Atuação";
                 planilha.Cell(linha, 4).Value = "ObjetosConhecimento";
                 planilha.Cell(linha, 5).Value = "Habilidades";
                 planilha.Cell(linha, 6).Value = "CodHab";
@@ -219,12 +267,13 @@ namespace Puc.BnccTeste.Api.Controllers
                 #endregion
 
 
+
                 foreach (var lista in result)
                 {
                     linha++;
                     planilha.Cell(linha, 1).Value = lista.Componente;
                     planilha.Cell(linha, 2).Value = lista.AnoFaixa;
-                    planilha.Cell(linha, 3).Value = lista.UnidadesTematicas;
+                    planilha.Cell(linha, 3).Value = (materia == "matematica") ? lista.UnidadesTematicas : lista.CampoAtuacao; ;
                     planilha.Cell(linha, 4).Value = lista.ObjetosConhecimento;
                     planilha.Cell(linha, 5).Value = lista.Habilidades;
                     planilha.Cell(linha, 6).Value = lista.CodHab;
@@ -353,7 +402,7 @@ namespace Puc.BnccTeste.Api.Controllers
                     var content = stream.ToArray();                 
                     return File(content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        $"Bncc_{matematica}.xlsx");
+                        $"Bncc_{materia}.xlsx");
 
                 }
             }
