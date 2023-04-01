@@ -7,6 +7,7 @@ using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System.Dynamic;
+using System.Linq;
 
 namespace Puc.BnccTeste.Api.Controllers
 {
@@ -16,71 +17,80 @@ namespace Puc.BnccTeste.Api.Controllers
     {
         private readonly IBnccMatematicaEfService _matematica;
         private readonly IBnccLinguaPortuguesaEfService _portugues;
-        public BnccMatematicaEfController(IBnccMatematicaEfService matematica,
-                                          IBnccLinguaPortuguesaEfService portugues
-
-
-
-
-
-        )
+        public BnccMatematicaEfController(IBnccMatematicaEfService matematica, IBnccLinguaPortuguesaEfService portugues)
         {
             _matematica = matematica;
             _portugues = portugues;
         }
 
 
-        [HttpGet("/api/ListarAnosDaMateria")]
-        public JsonResult ListarAnosDaMateria(string materia,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        [HttpPost("/api/ListarAnosDaMateria")]
+        public JsonResult ListarAnosDaMateria([FromQuery] IEnumerable<string> materia,bool todos , bool primeiroAno, bool segundoAno , bool terceiroAno , bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             try
             {        
-                if(materia == "matematica")
+                dynamic result;
+                List<dynamic> lista = new List<dynamic>();
+                //string[] listaMateria = materia.ToArray();
+
+
+                if (materia.Any())
                 {
-                    var lista = new List<BnccMatematicaEfDTO>();
-                    var result = _matematica.ListarAnosMatematica(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
-
-                    foreach (var item in result)
+                    if (materia.Contains("matematica"))
                     {
-                        lista.Add(new BnccMatematicaEfDTO
+                        result = _matematica.ListarAnosMatematica(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno)
+                            .Select(x => new BnccMatematicaEfDTO
+                            {
+                                Column1 = x.Column1,
+                                Componente = x.Componente,
+                                AnoFaixa = x.AnoFaixa,
+                                UnidadesTematicas = x.UnidadesTematicas,
+                                ObjetosConhecimento = x.ObjetosConhecimento,
+                                Habilidades = x.Habilidades,
+                                CodHab = x.CodHab,
+                                DescricaoCod = x.DescricaoCod
+                            });
+                        lista.Add(result);
+
+                        if (materia.Contains("portugues"))
                         {
-                            Column1 = item.Column1,
-                            Componente = item.Componente,
-                            AnoFaixa = item.AnoFaixa,
-                            UnidadesTematicas = item.UnidadesTematicas,
-                            ObjetosConhecimento = item.ObjetosConhecimento,
-                            Habilidades = item.Habilidades,
-                            CodHab = item.CodHab,
-                            DescricaoCod = item.DescricaoCod
-                        });
+                            result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno)
+                                .Select(x => new BnccLinguaPortuguesaEfDTO
+                                {
+                                    Column1 = x.Column1,
+                                    Componente = x.Componente,
+                                    AnoFaixa = x.AnoFaixa,
+                                    CampoAtuacao = x.CampoAtuacao,
+                                    PraticasLinguagem = x.PraticasLinguagem,
+                                    ObjetosConhecimento = x.ObjetosConhecimento,
+                                    Habilidades = x.Habilidades,
+                                    CodHab = x.CodHab,
+                                    DescricaoCod = x.DescricaoCod
+                                });
+                            lista.Add(result);
+                        }
+                        return Json(lista);
                     }
-
-                    return Json(lista);
-                }        
-
-                else if(materia == "portugues")
-                {
-                    var lista = new List<BnccLinguaPortuguesaEfDTO>();
-                    var result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
-
-                    foreach (var item in result)
-                    {
-                        lista.Add(new BnccLinguaPortuguesaEfDTO
-                        {
-                            Column1 = item.Column1,
-                            Componente = item.Componente,
-                            AnoFaixa = item.AnoFaixa,
-                            CampoAtuacao = item.CampoAtuacao,
-                            PraticasLinguagem = item.PraticasLinguagem,
-                            ObjetosConhecimento = item.ObjetosConhecimento,
-                            Habilidades = item.Habilidades,
-                            CodHab = item.CodHab,
-                            DescricaoCod = item.DescricaoCod
-                        });
-                    }
-
-                    return Json(lista);
                 }
+
+                //else if(materia.Contains("portugues"))
+                //{
+                //    result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno)
+                //        .Select(x => new BnccLinguaPortuguesaEfDTO
+                //        {
+                //            Column1 = x.Column1,
+                //            Componente = x.Componente,
+                //            AnoFaixa = x.AnoFaixa,
+                //            CampoAtuacao = x.CampoAtuacao,
+                //            PraticasLinguagem = x.PraticasLinguagem,
+                //            ObjetosConhecimento = x.ObjetosConhecimento,
+                //            Habilidades = x.Habilidades,
+                //            CodHab = x.CodHab,
+                //            DescricaoCod = x.DescricaoCod
+                //        });                 
+
+                //    return Json(result);
+                //}
 
                 return Json("Nenhum registro encontrado!");
             }
@@ -91,18 +101,29 @@ namespace Puc.BnccTeste.Api.Controllers
         }
 
         [HttpGet("/api/Excel")]
-        public ActionResult Excel(string materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public ActionResult Excel([FromQuery] IEnumerable<string> materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             using (var workbook = new XLWorkbook())
             {
-
+                string[] listaMateria = materia.ToArray();
                 dynamic result = "";
-                if(materia == "matematica")
-                    result = _matematica.ListarAnosMatematica(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
-                if (materia == "portugues")
-                    result = _portugues.ListarAnosPortugues(materia, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+                if (listaMateria.Any())
+                {
+                    if (materia.Contains("matematica"))
+                    {
+                        result = _matematica.ListarAnosMatematica(new List<string>() { listaMateria.ToString() }, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
+                    }
+                    if (materia.Contains("portugues"))
+                    {
+                        result = _portugues.ListarAnosPortugues(new List<string>() { listaMateria.ToString() }, todos, primeiroAno, segundoAno, terceiroAno, quartoAno, quintoAno, sextoAno, setimoAno, oitavoAno, nonoAno);
 
-               
+                    }
+
+                }
+
+
+
+                
 
                 var planilha = workbook.AddWorksheet("Bncc");
                 var linha = 3;
@@ -110,12 +131,12 @@ namespace Puc.BnccTeste.Api.Controllers
 
                 planilha.AddPicture(BnccImage).MoveTo(planilha.Cell(1, 1)).ScaleWidth(1.045, true);
 
-                planilha.Cell(2, 1).Value = (materia == "matematica") ? "Matemática" : "Português";
+                planilha.Cell(2, 1).Value = (listaMateria.Length.ToString().Equals("matematica")) ? "Matemática" : "Português";
                 planilha.Cell(2, 1).Worksheet.Range("A2", "G2").Merge();
 
                 planilha.Cell(linha, 1).Value = "Componente";
                 planilha.Cell(linha, 2).Value = "AnoFaixa";
-                planilha.Cell(linha, 3).Value = (materia == "matematica") ? "UnidadesTematicas" : "Campo Atuação";
+                planilha.Cell(linha, 3).Value = (listaMateria.Length.ToString().Equals("matematica")) ? "UnidadesTematicas" : "Campo Atuação";
                 planilha.Cell(linha, 4).Value = "ObjetosConhecimento";
                 planilha.Cell(linha, 5).Value = "Habilidades";
                 planilha.Cell(linha, 6).Value = "CodHab";
@@ -266,14 +287,12 @@ namespace Puc.BnccTeste.Api.Controllers
                 planilha.Cell(linha, 7).Style.Fill.SetBackgroundColor(XLColor.DodgerBlue);
                 #endregion
 
-
-
                 foreach (var lista in result)
                 {
                     linha++;
                     planilha.Cell(linha, 1).Value = lista.Componente;
                     planilha.Cell(linha, 2).Value = lista.AnoFaixa;
-                    planilha.Cell(linha, 3).Value = (materia == "matematica") ? lista.UnidadesTematicas : lista.CampoAtuacao; ;
+                    planilha.Cell(linha, 3).Value = (listaMateria.Length.ToString().Equals("matematica")) ? lista.UnidadesTematicas : lista.CampoAtuacao; ;
                     planilha.Cell(linha, 4).Value = lista.ObjetosConhecimento;
                     planilha.Cell(linha, 5).Value = lista.Habilidades;
                     planilha.Cell(linha, 6).Value = lista.CodHab;
