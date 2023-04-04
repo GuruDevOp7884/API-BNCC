@@ -14,6 +14,8 @@ namespace Puc.BnccTeste.Service.DTOs
 
         public string AnoFaixa { get; set; } = null!;
 
+        public string UnidadesTematicas { get; set; } = null!;
+
         public string CampoAtuacao { get; set; } = null!;
 
         public string PraticasLinguagem { get; set; } = null!;
