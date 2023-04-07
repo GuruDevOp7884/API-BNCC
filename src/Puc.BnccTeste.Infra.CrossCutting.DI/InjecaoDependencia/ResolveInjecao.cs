@@ -1,25 +1,28 @@
-﻿using Puc.BnccTeste.Infra.Data.Interface;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Puc.BnccTeste.Infra.Data.Interface;
 using Puc.BnccTeste.Infra.Data.Repositorio;
 using Puc.BnccTeste.Service.Interface;
 using Puc.BnccTeste.Service.Service;
-using SimpleInjector;
 
 namespace Puc.BnccTeste.Infra.CrossCutting.DI.InjecaoDependencia
 {
     public static class ResolveInjecao
     {
-        public static void RegisterService(Container container)
-        {
-            //services.AddDbContext<Contexto>(
-            //    (provider, options) => options.UseSqlServer(configuration.GetConnectionString("BnccTesteConnection")).UseInternalServiceProvider(provider));
-
+        public static IServiceCollection InjecaoDependencia(this IServiceCollection services)
+        {           
+            
             #region Repositorio
-            container.Register<IBnccMatematicaEfRepositorio, BnccMatematicaEfRepositorio>(Lifestyle.Scoped);
+            services.AddScoped<IBnccMatematicaEfRepositorio, BnccMatematicaEfRepositorio>();
+            services.AddScoped<IBnccLinguaPortuguesaEfRepositorio, BnccLinguaPortuguesaEfRepositorio>();
             #endregion
 
             #region Services
-            container.Register<IBnccMatematicaEfService, BnccMatematicaEfService>(Lifestyle.Scoped);
+            services.AddScoped<IBnccMatematicaEfService, BnccMatematicaEfService>();
+            services.AddScoped<IBnccLinguaPortuguesaEfService, BnccLinguaPortuguesaEfService>();
             #endregion
+
+            return services;
         }
     }
 }

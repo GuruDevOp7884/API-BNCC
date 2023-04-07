@@ -1,11 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
+using Puc.BnccTeste.Infra.CrossCutting.DI.InjecaoDependencia;
 using Puc.BnccTeste.Infra.Data.Context;
-using Puc.BnccTeste.Infra.Data.Interface;
-using Puc.BnccTeste.Infra.Data.Repositorio;
-using Puc.BnccTeste.Service.Interface;
-using Puc.BnccTeste.Service.Service;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-#region DI
-builder.Services.AddScoped<IBnccMatematicaEfRepositorio, BnccMatematicaEfRepositorio>();
-builder.Services.AddScoped<IBnccMatematicaEfService, BnccMatematicaEfService>();
-builder.Services.AddScoped<IBnccLinguaPortuguesaEfService, BnccLinguaPortuguesaEfService>();
-builder.Services.AddScoped<IBnccLinguaPortuguesaEfRepositorio, BnccLinguaPortuguesaEfRepositorio>();
-#endregion
+builder.Services.InjecaoDependencia();
 
 #region DB
 builder.Services.AddDbContext<Contexto>(options =>
@@ -36,7 +27,6 @@ builder.Services.AddCors();
 #endregion
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
