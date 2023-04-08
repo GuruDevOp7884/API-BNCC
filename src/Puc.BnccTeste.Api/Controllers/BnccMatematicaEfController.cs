@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Puc.BnccTeste.Service.Interface;
-using Puc.BnccTeste.Service.DTOs;
+using Puc.BnccTeste.Api.DTOs;
 using ClosedXML.Excel;
 using ClosedXML;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
