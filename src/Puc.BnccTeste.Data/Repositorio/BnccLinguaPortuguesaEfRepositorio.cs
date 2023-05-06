@@ -22,7 +22,7 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
             _DbSet = _Db.Set<BnccLinguaPortuguesaEf>();
         }
 
-        public IList<BnccLinguaPortuguesaEf> ListarAnosPortugues(bool materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public IEnumerable<BnccLinguaPortuguesaEf> ListarAnosPortugues(bool materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             return _Db.BnccLinguaPortuguesaEfs.ToList();
         }

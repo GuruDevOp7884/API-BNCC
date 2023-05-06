@@ -3,15 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Puc.BnccTeste.Service.Interface
 {
     public interface IBnccMatematicaEfService 
     {
-        IList<BnccMatematicaEf> ListarTodos();
-        IList<BnccMatematicaEf> ListarAnosMatematica(
-            string materia, 
+        IEnumerable<BnccMatematicaEf> ListarTodos();
+        IEnumerable<BnccMatematicaEf> ListarAnosMatematica(
+            IEnumerable<string> materia, 
             bool todos,
             bool primeiroAno, 
             bool segundoAno, 
@@ -23,7 +24,7 @@ namespace Puc.BnccTeste.Service.Interface
             bool oitavoAno,
             bool nonoAno
             );       
-        BnccMatematicaEf ObterPeloId(int id);
+         BnccMatematicaEf ObterPeloId(int id);
         BnccMatematicaEf ObterPeloCodHab(string cod);
     }
 }

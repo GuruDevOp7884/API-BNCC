@@ -26,11 +26,6 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
             return _DbSet.Where(predicate);
         }
 
-        //public IEnumerable<TEntity> ListarPorAno(bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
-        //{
-        //    _Db.
-        //}
-
         public IEnumerable<TEntity> ListarTodos()
         {
            return _DbSet.ToList();
@@ -46,11 +41,40 @@ namespace Puc.BnccTeste.Infra.Data.Repositorio
             return _DbSet.Find(id);
         }
 
+        public TEntity ObterPeloEmail(string email)
+        {
+            var userEmail = email.ToString();
+            return _DbSet.Find(email);
+        }
+
+        public int Salvar()
+        {
+            return _Db.SaveChanges();
+        }
+
         public bool Inserir(TEntity entidade)
         {
            _DbSet.Add(entidade);
-            return _Db.SaveChanges() > 0;
+            return Salvar() > 0;
         }
 
+        public bool Atualizar(TEntity entidade)
+        {
+            _DbSet.Update(entidade);
+            return Salvar() > 0;
+        }
+
+        public bool Deletar(int id)
+        {
+            _DbSet.Remove(_DbSet.Find(id));
+            return Salvar() > 0;
+        }
+
+        
+
+        public void Dispose()
+        {
+            _Db.Dispose();
+        }
     }
 }
