@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Puc.BnccTeste.Service.Service
@@ -18,10 +19,9 @@ namespace Puc.BnccTeste.Service.Service
             _portRepo= portRepo;
         }
 
-        public IList<BnccLinguaPortuguesaEf> ListarAnosPortugues(string materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
+        public IEnumerable<BnccLinguaPortuguesaEf> ListarAnosPortugues(IEnumerable<string> materia, bool todos, bool primeiroAno, bool segundoAno, bool terceiroAno, bool quartoAno, bool quintoAno, bool sextoAno, bool setimoAno, bool oitavoAno, bool nonoAno)
         {
             var lista = _portRepo.ListarTodos();
-
             try
             {
                 if(lista != null)
@@ -54,7 +54,7 @@ namespace Puc.BnccTeste.Service.Service
             return null;
         }
 
-        public IList<BnccLinguaPortuguesaEf> ListarTodos()
+        public IEnumerable<BnccLinguaPortuguesaEf> ListarTodos()
         {
             var listar = _portRepo.ListarTodos();
             return listar.ToList();

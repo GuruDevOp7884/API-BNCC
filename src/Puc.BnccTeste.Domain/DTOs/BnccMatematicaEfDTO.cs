@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Puc.BnccTeste.Service.DTOs
+namespace Puc.BnccTeste.Api.DTOs
 {
-    public class BnccLinguaPortuguesaEfDTO
+    public class BnccMatematicaEfDTO
     {
         public int Column1 { get; set; }
 
@@ -14,16 +14,15 @@ namespace Puc.BnccTeste.Service.DTOs
 
         public string AnoFaixa { get; set; } = null!;
 
-        public string CampoAtuacao { get; set; } = null!;
-
-        public string PraticasLinguagem { get; set; } = null!;
+        public string UnidadesTematicas { get; set; } = null!;
 
         public string ObjetosConhecimento { get; set; } = null!;
 
         public string Habilidades { get; set; } = null!;
 
-        public string CodHab { get; set; } = null!;
+        public string? CodHab { get; set; }
 
         public string DescricaoCod { get; set; } = null!;
-    }        
+       
+    }
 }

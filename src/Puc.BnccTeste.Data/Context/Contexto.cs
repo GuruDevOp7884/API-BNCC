@@ -51,6 +51,9 @@ namespace Puc.BnccTeste.Infra.Data.Context
 
         public virtual DbSet<EuOutroNosEdInf> EuOutroNosEdInfs { get; set; }
 
+        public virtual DbSet<Usuario> Usuarios { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             if (!builder.IsConfigured)
@@ -67,6 +70,13 @@ namespace Puc.BnccTeste.Infra.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasKey(e => e.Usuario_Id);
+                entity.Property(e => e.Usuario_Id)
+                    .ValueGeneratedOnAdd();                    
+            });
+
             modelBuilder.Entity<BnccArtesEf>(entity =>
             {
                 entity.HasKey(e => e.Column1).HasName("PK__bncc_art__DB06C12DAFD67B65");
