@@ -13,7 +13,11 @@ namespace Puc.BnccTeste.Infra.Data.Interface
         IEnumerable<TEntity> Buscar(Expression<Func<TEntity, bool>> predicate);
         TEntity ObterPeloId(int id);
         TEntity ObterPeloCodHab(string cod);
+        public TEntity ObterPeloEmail(string email);
+        int Salvar();
         bool Inserir(TEntity entidade);
+        bool Atualizar(TEntity entidade);
+        bool Deletar(int id);
 
         //obter competencias por materias
     }

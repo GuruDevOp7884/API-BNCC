@@ -15,11 +15,13 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.InjecaoDependencia
             #region Repositorio
             services.AddScoped<IBnccMatematicaEfRepositorio, BnccMatematicaEfRepositorio>();
             services.AddScoped<IBnccLinguaPortuguesaEfRepositorio, BnccLinguaPortuguesaEfRepositorio>();
+            services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             #endregion
 
             #region Services
             services.AddScoped<IBnccMatematicaEfService, BnccMatematicaEfService>();
             services.AddScoped<IBnccLinguaPortuguesaEfService, BnccLinguaPortuguesaEfService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             #endregion
 
             return services;
