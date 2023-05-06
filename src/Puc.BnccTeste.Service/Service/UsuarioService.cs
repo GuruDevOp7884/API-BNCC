@@ -116,7 +116,7 @@ namespace Puc.BnccTeste.Service.Service
 
         public ContractorResult Registrar(Usuario usuario)
         {
-            ContractorResult retorno = new ContractorResult();
+             ContractorResult retorno = new ContractorResult();
 
             try
             {
