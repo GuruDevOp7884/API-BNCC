@@ -789,10 +789,8 @@ namespace Puc.BnccTeste.Api.Controllers
                 { 
                     var result = _usuario.Login(usuario);
 
-                    if (result != null)
-                    {
-                        return Ok(result);
-                    }
+                    if (result != null)                    
+                        return Ok(result);                    
                 }
             }
             catch (Exception ex)
@@ -806,25 +804,19 @@ namespace Puc.BnccTeste.Api.Controllers
         public dynamic Registrar([FromBody] Usuario usuario)
         {         
             try
-            {
-                if (usuario != null)
-                {
-                    var usuarios = _usuario.ListarUsuariosAtivos().Where(x => x.Email == usuario.Email).ToList();
+            {                 
+                var result = _usuario.Registrar(usuario);
 
-                    if (usuarios.Count() == 0)
-                    {
-                        var result = _usuario.Registrar(usuario);
-                        return Ok(result);
-                    }
-
-                }
+                if(result != null)
+                    return Ok(result);
+               
             }
             catch (Exception ex)
             {
                return BadRequest("Erro inesperado contate o administrador do sistema!");
             }
 
-            return Ok("Por favor preencha os campos");
+            return Ok("Erro inesperado");
         }
     }
 }

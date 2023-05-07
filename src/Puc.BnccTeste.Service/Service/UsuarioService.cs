@@ -96,9 +96,15 @@ namespace Puc.BnccTeste.Service.Service
                             retorno.Message = "Email/Senha inválidos";
                         }
                     }
+                    else if(usuario.Email != "" && usuario.Senha != "")
+                    {
+                        retorno.AcaoValida = false;
+                        retorno.Message = "Usuário não existe";
+                    }
                     else
                     {
-                        retorno.Message = "Por favor digite um Email e Senha";
+                        retorno.AcaoValida = false;
+                        retorno.Message = "Por favor preencha todos os campos";
                     }
                 }
                 else
@@ -120,21 +126,37 @@ namespace Puc.BnccTeste.Service.Service
 
             try
             {
-                retorno.AcaoValida = Utils.ValidarEmail(usuario.Email);
+                var usuarios = ListarUsuariosAtivos().Where(x => x.Email == usuario.Email).ToList();
 
-                if (retorno.AcaoValida && usuario.Senha != "" && usuario.Nome != "")
+                if (usuarios.Count() > 0)
                 {
-                    usuario.Ativo = true;
-                    usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
+                    retorno.AcaoValida = false;
+                    retorno.Message = "Email já existe";
+                }
+                else
+                {
+                    retorno.AcaoValida = Utils.ValidarEmail(usuario.Email);
 
-                    retorno.AcaoValida = _UserRepo.Inserir(usuario);
-                    retorno.Message = "Usuário registrado com sucesso";
-                    
-                }
-                else if (retorno.AcaoValida != true)
-                {
-                    retorno.Message = "Email inválido";
-                }
+                    if (retorno.AcaoValida && usuario.Senha != "" && usuario.Nome != "")
+                    {
+                        usuario.Ativo = true;
+                        usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
+
+                        retorno.AcaoValida = _UserRepo.Inserir(usuario);
+                        retorno.Message = "Usuário registrado com sucesso";
+
+                    }
+                    else if (retorno.AcaoValida != true && usuario.Senha != "" && usuario.Nome != "")
+                    {
+                        retorno.AcaoValida = false;
+                        retorno.Message = "Email inválido";
+                    }
+                    else
+                    {
+                        retorno.AcaoValida = false;
+                        retorno.Message = "Por favor preencha todos os campos";
+                    }
+                }               
             }
             catch (Exception ex)
             {
