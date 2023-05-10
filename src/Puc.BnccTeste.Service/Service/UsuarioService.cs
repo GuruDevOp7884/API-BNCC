@@ -93,23 +93,23 @@ namespace Puc.BnccTeste.Service.Service
                         }
                         else
                         {
-                            retorno.Message = "Email/Senha inválidos";
+                            retorno.Message = "Email/Senha inválidos!";
                         }
                     }
                     else if(usuario.Email != "" && usuario.Senha != "")
                     {
                         retorno.AcaoValida = false;
-                        retorno.Message = "Usuário não existe";
+                        retorno.Message = "Usuário não existe!";
                     }
                     else
                     {
                         retorno.AcaoValida = false;
-                        retorno.Message = "Por favor preencha todos os campos";
+                        retorno.Message = "Por favor preencha todos os campos!";
                     }
                 }
                 else
                 {
-                    retorno.Message = "Email inválido";
+                    retorno.Message = "Email inválido!";
                 }
             }
             catch (Exception ex)
@@ -131,7 +131,7 @@ namespace Puc.BnccTeste.Service.Service
                 if (usuarios.Count() > 0)
                 {
                     retorno.AcaoValida = false;
-                    retorno.Message = "Email já existe";
+                    retorno.Message = "Email já cadastrado!";
                 }
                 else
                 {
@@ -143,7 +143,7 @@ namespace Puc.BnccTeste.Service.Service
                         usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
 
                         retorno.AcaoValida = _UserRepo.Inserir(usuario);
-                        retorno.Message = "Usuário registrado com sucesso";
+                        retorno.Message = "Usuário registrado com sucesso!";
 
                     }
                     else if (retorno.AcaoValida != true && usuario.Senha != "" && usuario.Nome != "")
