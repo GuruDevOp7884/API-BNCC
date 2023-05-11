@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Puc.BnccTeste.Domain.ObjetoValor;
 using Puc.BnccTeste.Infra.Data.Interface;
 using Puc.BnccTeste.Infra.Data.Repositorio;
 using Puc.BnccTeste.Service.Interface;
@@ -22,6 +23,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.InjecaoDependencia
             services.AddScoped<IBnccMatematicaEfService, BnccMatematicaEfService>();
             services.AddScoped<IBnccLinguaPortuguesaEfService, BnccLinguaPortuguesaEfService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IContractorResult, ContractorResult>();
             #endregion
 
             return services;

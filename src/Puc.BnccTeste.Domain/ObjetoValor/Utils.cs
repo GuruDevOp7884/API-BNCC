@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
+namespace Puc.BnccTeste.Domain.ObjetoValor
 {
     public static class Utils
     {
@@ -57,7 +57,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
         {
             try
             {
-                return Decimal.Round(Convert.ToDecimal(value), 2);
+                return decimal.Round(Convert.ToDecimal(value), 2);
             }
             catch
             {
@@ -357,7 +357,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                 //Verifica se o número digitado é realmente um número.
                 foreach (char caracter in codigoBarra
                 ) //Com o foreach passamos caracter por caracter para dentro de uma 
-                    if (!(char.IsNumber(caracter))) //variável "caracter" e verificamos se ela é um número.
+                    if (!char.IsNumber(caracter)) //variável "caracter" e verificamos se ela é um número.
                         return false; //Caso ache algo diferente de número retorna falso.      
                 return true; //Sem erros, retorna verdadeiro.
             }
@@ -370,7 +370,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
         /// <returns>verdadeiro ou falso</returns>
         public static bool verificaDigitoCodigoBarra(string codigoBarra)
         {
-            int dvGeral = Utils.ToInt32(codigoBarra.Substring(4, 1));
+            int dvGeral = ToInt32(codigoBarra.Substring(4, 1));
             string codBar = codigoBarra.Substring(0, 3) + codigoBarra.Substring(5);
             int digito = 0;
 
@@ -379,7 +379,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             {
                 //Concessionaria
                 codBar = codigoBarra.Substring(0, 3) + codigoBarra.Substring(4);
-                dvGeral = Utils.ToInt32(codigoBarra.Substring(3, 1));
+                dvGeral = ToInt32(codigoBarra.Substring(3, 1));
 
                 digito = Mod10(codBar);
                 if (digito == dvGeral)
@@ -409,7 +409,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             {
                 //Boleto Bancario
                 codBar = codigoBarra.Substring(0, 4) + codigoBarra.Substring(5);
-                dvGeral = Utils.ToInt32(codigoBarra.Substring(4, 1));
+                dvGeral = ToInt32(codigoBarra.Substring(4, 1));
                 digito = Mod11Peso2a9(codBar);
             }
 
@@ -544,22 +544,22 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
         {
             //Declaração de variáveis
             int i, somaTotal, somaPar = 0, somaImpar = 0, multiplo, digito;
-            for (i = 0; i < (codigoBarra.Length - 1); i++) //Laço para percorrer a String flexível ao seu tamanho.
+            for (i = 0; i < codigoBarra.Length - 1; i++) //Laço para percorrer a String flexível ao seu tamanho.
             {
                 if ((i + 1) % 2 == 0) //Verificação da posíção do número, se é par ou ímpar.
-                    somaPar += (((int)(codigoBarra[i]) - 48) * 3); //Caso Par, multiplica-se por 3.
-                else somaImpar += (((int)(codigoBarra[i]) - 48) * 1); //Caso Impar, multiplica-se por 1.
+                    somaPar += (codigoBarra[i] - 48) * 3; //Caso Par, multiplica-se por 3.
+                else somaImpar += (codigoBarra[i] - 48) * 1; //Caso Impar, multiplica-se por 1.
             }
 
             somaTotal = somaPar + somaImpar; // Soma de todos resultados.
             if (somaTotal % 10 != 0 && somaTotal > 10)
                 //Algoritmo para encontrar o múltiplo de 10 mais perto, igual ou maior.
-                multiplo = ((somaTotal / 10) + 1);
+                multiplo = somaTotal / 10 + 1;
             else if (somaTotal < 10)
                 multiplo = 1;
             else multiplo = somaTotal / 10; //fim
-            digito = (multiplo * 10) - somaTotal; //Diminui-se do múltiplo o valor da soma total.
-            int valorVerifica = ((int)(codigoBarra[codigoBarra.Length - 1]) - 48);
+            digito = multiplo * 10 - somaTotal; //Diminui-se do múltiplo o valor da soma total.
+            int valorVerifica = codigoBarra[codigoBarra.Length - 1] - 48;
             if (digito != valorVerifica) //Verifica-se o dígito é igual ao 13º número do barcode.
                 return false; //Caso não, retorna falso.
             return true; //Caso igual, retorna verdadeiro.
@@ -594,10 +594,10 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
             for (int i = seq.Length; i > 0; i--)
             {
-                r = (Convert.ToInt32(Mid(seq, i, 1)) * p);
+                r = Convert.ToInt32(Mid(seq, i, 1)) * p;
 
                 if (r > 9)
-                    r = (r / 10) + (r % 10);
+                    r = r / 10 + r % 10;
 
                 s += r;
 
@@ -607,7 +607,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                     p = p + 1;
             }
 
-            d = ((10 - (s % 10)) % 10);
+            d = (10 - s % 10) % 10;
             return d;
         }
 
@@ -634,7 +634,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             {
                 n = Mid(seq, i, 1);
 
-                s = s + (Convert.ToInt32(n) * p);
+                s = s + Convert.ToInt32(n) * p;
 
                 if (p < b)
                     p = p + 1;
@@ -642,7 +642,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                     p = 2;
             }
 
-            r = ((s * 10) % 11);
+            r = s * 10 % 11;
 
             if (r == 0 || r == 1 || r == 10)
                 d = 1;
@@ -674,17 +674,17 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Mid(seq, i, 1)) * p);
+                s = s + Convert.ToInt32(Mid(seq, i, 1)) * p;
                 if (p == b)
                     p = 2;
                 else
                     p = p + 1;
             }
 
-            d = 11 - (s % 11);
+            d = 11 - s % 11;
 
 
-            if ((d > 9) || (d == 0) || (d == 1))
+            if (d > 9 || d == 0 || d == 1)
                 d = 1;
 
             return d;
@@ -712,7 +712,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             for (int i = seq.Length - 1; i >= 0; i--)
             {
                 string aux = Convert.ToString(seq[i]);
-                s += (Convert.ToInt32(aux) * p);
+                s += Convert.ToInt32(aux) * p;
                 if (p >= b)
                     p = 2;
                 else
@@ -726,8 +726,8 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             }
             else
             {
-                d = 11 - (s % 11);
-                if ((d > 9) || (d == 0))
+                d = 11 - s % 11;
+                if (d > 9 || d == 0)
                     d = 0;
 
                 return d;
@@ -749,7 +749,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             int nresto = 0;
             string num = string.Empty;
 
-            mult = 1 + (seq.Length % (lim - 1));
+            mult = 1 + seq.Length % (lim - 1);
 
             if (mult == 1)
                 mult = lim;
@@ -767,7 +767,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                 pos += 1;
             }
 
-            nresto = (total % 11);
+            nresto = total % 11;
             if (flag == 1)
                 return nresto;
             else
@@ -775,7 +775,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                 if (nresto == 0 || nresto == 1 || nresto == 10)
                     ndig = 1;
                 else
-                    ndig = (11 - nresto);
+                    ndig = 11 - nresto;
 
                 return ndig;
             }
@@ -795,7 +795,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             int nresto = 0;
             string num = string.Empty;
 
-            mult = 1 + (seq.Length % (lim - 1));
+            mult = 1 + seq.Length % (lim - 1);
 
             if (mult == 1)
                 mult = lim;
@@ -812,7 +812,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                 pos += 1;
             }
 
-            nresto = ((total * 10) % 11);
+            nresto = total * 10 % 11;
 
             if (flag == 1)
                 return nresto;
@@ -872,14 +872,14 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
             for (int i = 0; i < seq.Length; i++)
             {
-                s = s + (Convert.ToInt32(seq[i]) * p);
+                s = s + Convert.ToInt32(seq[i]) * p;
                 if (p < b)
                     p = p + 1;
                 else
                     p = 2;
             }
 
-            d = 11 - (s % 11);
+            d = 11 - s % 11;
             if (d > 9)
                 d = 0;
             return d;
@@ -905,14 +905,14 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
             for (int i = 0; i < seq.Length; i++)
             {
-                s = s + (Convert.ToInt32(seq[i]) * p);
+                s = s + Convert.ToInt32(seq[i]) * p;
                 if (p < b)
                     p = p + 1;
                 else
                     p = 2;
             }
 
-            d = 11 - (s % 11);
+            d = 11 - s % 11;
             if (d > 9)
                 d = 0;
             return d;
@@ -1039,8 +1039,8 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
                 foreach (char c in strline)
                 {
-                    if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z')
-                                               || (c >= 'a' && c <= 'z') || (c == '.') || (c == '_'))
+                    if (c >= '0' && c <= '9' || c >= 'A' && c <= 'Z'
+                                               || c >= 'a' && c <= 'z' || c == '.' || c == '_')
                     {
                         buffer[idx] = c;
                         idx++;
@@ -1066,7 +1066,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             string valor = string.Empty;
             try
             {
-                var strValor = Decimal.Round(Convert.ToDecimal(valorParametro), 2);
+                var strValor = decimal.Round(Convert.ToDecimal(valorParametro), 2);
                 valor = strValor.ToString().Replace(".", ",");
                 var vl = valor.Split(',');
                 string esq = vl.FirstOrDefault();
@@ -1139,8 +1139,8 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
         /// <returns>string</returns>
         public static string Base64Criptografar(string valor)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(valor);
-            return System.Convert.ToBase64String(plainTextBytes);
+            var plainTextBytes = Encoding.UTF8.GetBytes(valor);
+            return Convert.ToBase64String(plainTextBytes);
         }
 
         /// <summary>
@@ -1150,8 +1150,8 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
         /// <returns>string</returns>
         public static string Base64Descriptografar(string valor)
         {
-            var base64EncodedBytes = System.Convert.FromBase64String(valor);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            var base64EncodedBytes = Convert.FromBase64String(valor);
+            return Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
 
@@ -1180,7 +1180,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             StringBuilder result = new StringBuilder(maxSize);
             foreach (byte b in data)
             {
-                result.Append(chars[b % (chars.Length)]);
+                result.Append(chars[b % chars.Length]);
             }
 
             string strKey = result.ToString().ToUpper();
@@ -1188,10 +1188,10 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             if (maxSize < 30)
                 return strKey.Substring(0, maxSize);
 
-            string retorno = Utils.ExtrairDaPosicao(strKey, 1, 8) + "-" + Utils.ExtrairDaPosicao(strKey, 9, 12) + "-" +
-                             Utils.ExtrairDaPosicao(strKey, 13, 16) + "-" + Utils.ExtrairDaPosicao(strKey, 17, 20) +
+            string retorno = ExtrairDaPosicao(strKey, 1, 8) + "-" + ExtrairDaPosicao(strKey, 9, 12) + "-" +
+                             ExtrairDaPosicao(strKey, 13, 16) + "-" + ExtrairDaPosicao(strKey, 17, 20) +
                              "-" +
-                             Utils.ExtrairDaPosicao(strKey, 21, 32);
+                             ExtrairDaPosicao(strKey, 21, 32);
             return retorno;
         }
 
@@ -1220,7 +1220,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             StringBuilder result = new StringBuilder(maxSize);
             foreach (byte b in data)
             {
-                result.Append(chars[b % (chars.Length)]);
+                result.Append(chars[b % chars.Length]);
             }
 
             string strKey = result.ToString().ToUpper();
@@ -1228,10 +1228,10 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             if (maxSize < 32)
                 return strKey;
 
-            string retorno = Utils.ExtrairDaPosicao(strKey, 1, 8) + "-" + Utils.ExtrairDaPosicao(strKey, 9, 12) + "-" +
-                             Utils.ExtrairDaPosicao(strKey, 13, 16) + "-" + Utils.ExtrairDaPosicao(strKey, 17, 20) +
+            string retorno = ExtrairDaPosicao(strKey, 1, 8) + "-" + ExtrairDaPosicao(strKey, 9, 12) + "-" +
+                             ExtrairDaPosicao(strKey, 13, 16) + "-" + ExtrairDaPosicao(strKey, 17, 20) +
                              "-" +
-                             Utils.ExtrairDaPosicao(strKey, 21, 32);
+                             ExtrairDaPosicao(strKey, 21, 32);
             return retorno;
         }
 
@@ -1240,14 +1240,14 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static String RemoveAcento(String value)
+        public static string RemoveAcento(string value)
         {
-            String normalizedString = value.Normalize(NormalizationForm.FormD);
+            string normalizedString = value.Normalize(NormalizationForm.FormD);
             StringBuilder stringBuilder = new StringBuilder();
 
             for (int i = 0; i < normalizedString.Length; i++)
             {
-                Char c = normalizedString[i];
+                char c = normalizedString[i];
                 if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                     stringBuilder.Append(c);
             }
@@ -1285,10 +1285,10 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
                         if (codigobarra.Substring(0, 1) == "8")
                         {
-                            var barra1 = Utils.ExtrairDaPosicao(Codbarra, 1, 11);
-                            var barra2 = Utils.ExtrairDaPosicao(Codbarra, 13, 23);
-                            var barra3 = Utils.ExtrairDaPosicao(Codbarra, 25, 35);
-                            var barra4 = Utils.ExtrairDaPosicao(Codbarra, 37, 47);
+                            var barra1 = ExtrairDaPosicao(Codbarra, 1, 11);
+                            var barra2 = ExtrairDaPosicao(Codbarra, 13, 23);
+                            var barra3 = ExtrairDaPosicao(Codbarra, 25, 35);
+                            var barra4 = ExtrairDaPosicao(Codbarra, 37, 47);
                             codigobarra = string.Concat(barra1, barra2, barra3, barra4);
                         }
                         else
@@ -1341,11 +1341,11 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                     {
                         if (isNumber == true)
                         {
-                            result += (string)(new string(FitChar, (minLength - SringToBeFit.Length)) + SringToBeFit);
+                            result += new string(FitChar, minLength - SringToBeFit.Length) + SringToBeFit;
                         }
                         else
                         {
-                            result += (string)(SringToBeFit + new string(FitChar, (minLength - SringToBeFit.Length)));
+                            result += SringToBeFit + new string(FitChar, minLength - SringToBeFit.Length);
                         }
                     }
                 }
@@ -1399,8 +1399,8 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
             Regex objNotNumberPattern = new Regex("[^0-9.-]");
             Regex objTwoDotPattern = new Regex("[0-9]*[.][0-9]*[.][0-9]*");
             Regex objTwoMinusPattern = new Regex("[0-9]*[-][0-9]*[-][0-9]*");
-            String strValidRealPattern = "^([-]|[.]|[-.]|[0-9])[0-9]*[.]*[0-9]+$";
-            String strValidIntegerPattern = "^([-]|[0-9])[0-9]*$";
+            string strValidRealPattern = "^([-]|[.]|[-.]|[0-9])[0-9]*[.]*[0-9]+$";
+            string strValidIntegerPattern = "^([-]|[0-9])[0-9]*$";
             Regex objNumberPattern = new Regex("(" + strValidRealPattern + ")|(" + strValidIntegerPattern + ")");
 
             return !objNotNumberPattern.IsMatch(value) &&
@@ -1437,7 +1437,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
                 //txt.Text = cep;
             }
 
-            return System.Text.RegularExpressions.Regex.IsMatch(cep, ("[0-9]{5}-[0-9]{3}"));
+            return Regex.IsMatch(cep, "[0-9]{5}-[0-9]{3}");
         }
 
         /// <summary>
@@ -1582,7 +1582,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
                 soma += int.Parse(tempCnpj[i].ToString()) * multiplicador1[i];
 
-            resto = (soma % 11);
+            resto = soma % 11;
 
             if (resto < 2)
 
@@ -1602,7 +1602,7 @@ namespace Puc.BnccTeste.Infra.CrossCutting.DI.Util
 
                 soma += int.Parse(tempCnpj[i].ToString()) * multiplicador2[i];
 
-            resto = (soma % 11);
+            resto = soma % 11;
 
             if (resto < 2)
 

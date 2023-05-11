@@ -14,8 +14,8 @@ namespace Puc.BnccTeste.Service.Interface
         IEnumerable<Usuario> ListarUsuariosAtivos();
         bool Inserir(Usuario usuario);
         bool Atualizar(Usuario usuario);
-        ContractorResult Login(LoginUsuario usuario);
-        ContractorResult Registrar(Usuario usuario);
+        dynamic Login(LoginUsuario usuario);
+        dynamic Registrar(Usuario usuario);
         bool Deletar(int id);
 
     }
