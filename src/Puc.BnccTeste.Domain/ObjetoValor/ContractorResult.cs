@@ -11,11 +11,13 @@ namespace Puc.BnccTeste.Domain.ObjetoValor
     {        
         public string Message { get; set; }
         public bool AcaoValida { get; set; }
+        public object Data { get; set; }
         
     }
     public interface IContractorResult 
     {
         string Message { get; set; }
         bool AcaoValida { get; set; }
+        public object Data { get; set; }
     }
 }

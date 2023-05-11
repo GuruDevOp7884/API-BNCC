@@ -9,18 +9,19 @@ using Puc.BnccTeste.Domain.Entidade;
 using BCrypt.Net;
 using Puc.BnccTeste.Domain.ObjetoValor;
 using Puc.BnccTeste.Api.DTOs;
-using Puc.BnccTeste.Infra.CrossCutting.DI.Util;
 
 namespace Puc.BnccTeste.Service.Service
 {
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepositorio _UserRepo;
+        private readonly IContractorResult _contractor;
         private bool disposedValue;
 
-        public UsuarioService(IUsuarioRepositorio userRepo)
+        public UsuarioService(IUsuarioRepositorio userRepo, IContractorResult contractor)
         {
             _UserRepo = userRepo;
+            _contractor = contractor;
         }
 
         public IEnumerable<Usuario> ListarUsuariosAtivos()
@@ -73,15 +74,16 @@ namespace Puc.BnccTeste.Service.Service
             return false; 
         }
 
-        public ContractorResult Login(LoginUsuario usuario)
+        public dynamic Login(LoginUsuario usuario)
         {
-            ContractorResult retorno = new ContractorResult();
+            var retorno = _contractor;            
 
             try
             {
                 if (retorno.AcaoValida = Utils.ValidarEmail(usuario.Email))
                 {
                     var usuarios = ListarUsuariosAtivos().FirstOrDefault(x => x.Email == usuario.Email);
+                    retorno.Data = usuario;
 
                     if (usuarios != null)
                     {
@@ -120,9 +122,9 @@ namespace Puc.BnccTeste.Service.Service
             return retorno;
         }
 
-        public ContractorResult Registrar(Usuario usuario)
+        public dynamic Registrar(Usuario usuario)
         {
-             ContractorResult retorno = new ContractorResult();
+            var retorno = _contractor;
 
             try
             {
@@ -137,20 +139,26 @@ namespace Puc.BnccTeste.Service.Service
                 {
                     retorno.AcaoValida = Utils.ValidarEmail(usuario.Email);
 
-                    if (retorno.AcaoValida && usuario.Senha != "" && usuario.Nome != "")
+                    if (_contractor.AcaoValida && usuario.Senha != "" && usuario.Nome != "")
                     {
                         usuario.Ativo = true;
                         usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
 
                         retorno.AcaoValida = _UserRepo.Inserir(usuario);
                         retorno.Message = "Usuário registrado com sucesso!";
+                        retorno.Data = new RegistrarUsuario()
+                        {
+                            Email = usuario.Email,
+                            Nome= usuario.Nome,
+                            Tipo= usuario.Tipo,                            
+                        };
 
                     }
-                    else if (retorno.AcaoValida != true && usuario.Senha != "" && usuario.Nome != "")
+                    else if (_contractor.AcaoValida != true && usuario.Senha != "" && usuario.Nome != "")
                     {
                         retorno.AcaoValida = false;
                         retorno.Message = "Email inválido";
-                    }
+                    }   
                     else
                     {
                         retorno.AcaoValida = false;

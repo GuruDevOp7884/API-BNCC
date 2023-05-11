@@ -7,7 +7,6 @@ using DocumentFormat.OpenXml.Vml.Spreadsheet;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Puc.BnccTeste.Domain.Entidade;
 using System.Linq;
-using Puc.BnccTeste.Infra.CrossCutting.DI.Util;
 using Puc.BnccTeste.Domain.ObjetoValor;
 
 namespace Puc.BnccTeste.Api.Controllers
@@ -813,7 +812,7 @@ namespace Puc.BnccTeste.Api.Controllers
             }
             catch (Exception ex)
             {
-               return BadRequest("Erro inesperado contate o administrador do sistema!");
+               return BadRequest("Erro inesperado contate o administrador do sistema!" + ex);
             }
 
             return Ok("Erro inesperado");
