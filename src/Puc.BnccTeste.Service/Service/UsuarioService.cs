@@ -15,13 +15,11 @@ namespace Puc.BnccTeste.Service.Service
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepositorio _UserRepo;
-        private readonly IContractorResult _contractor;
         private bool disposedValue;
 
-        public UsuarioService(IUsuarioRepositorio userRepo, IContractorResult contractor)
+        public UsuarioService(IUsuarioRepositorio userRepo)
         {
             _UserRepo = userRepo;
-            _contractor = contractor;
         }
 
         public IEnumerable<Usuario> ListarUsuariosAtivos()
@@ -74,16 +72,15 @@ namespace Puc.BnccTeste.Service.Service
             return false; 
         }
 
-        public dynamic Login(LoginUsuario usuario)
+        public IContractorResult Login(LoginUsuario usuario)
         {
-            var retorno = _contractor;            
+            var retorno = new ContractorResult();            
 
             try
             {
                 if (retorno.AcaoValida = Utils.ValidarEmail(usuario.Email))
                 {
-                    var usuarios = ListarUsuariosAtivos().FirstOrDefault(x => x.Email == usuario.Email);
-                    retorno.Data = usuario;
+                    var usuarios = ListarUsuariosAtivos().FirstOrDefault(x => x.Email == usuario.Email);                    
 
                     if (usuarios != null)
                     {
@@ -92,6 +89,7 @@ namespace Puc.BnccTeste.Service.Service
                         if (retorno.AcaoValida)
                         {
                             retorno.Message = "Usuário encontrado";
+                            retorno.Data = usuario;
                         }
                         else
                         {
@@ -122,9 +120,9 @@ namespace Puc.BnccTeste.Service.Service
             return retorno;
         }
 
-        public dynamic Registrar(Usuario usuario)
+        public IContractorResult Registrar(Usuario usuario)
         {
-            var retorno = _contractor;
+            var retorno = new ContractorResult();
 
             try
             {
@@ -139,7 +137,7 @@ namespace Puc.BnccTeste.Service.Service
                 {
                     retorno.AcaoValida = Utils.ValidarEmail(usuario.Email);
 
-                    if (_contractor.AcaoValida && usuario.Senha != "" && usuario.Nome != "")
+                    if (retorno.AcaoValida && usuario.Senha != "" && usuario.Nome != "")
                     {
                         usuario.Ativo = true;
                         usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
@@ -154,7 +152,7 @@ namespace Puc.BnccTeste.Service.Service
                         };
 
                     }
-                    else if (_contractor.AcaoValida != true && usuario.Senha != "" && usuario.Nome != "")
+                    else if (retorno.AcaoValida != true && usuario.Senha != "" && usuario.Nome != "")
                     {
                         retorno.AcaoValida = false;
                         retorno.Message = "Email inválido";

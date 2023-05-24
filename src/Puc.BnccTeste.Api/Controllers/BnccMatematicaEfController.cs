@@ -19,7 +19,10 @@ namespace Puc.BnccTeste.Api.Controllers
         private readonly IBnccLinguaPortuguesaEfService _portugues;
         private readonly IUsuarioService _usuario;
 
-        public BnccMatematicaEfController(IBnccMatematicaEfService matematica, IBnccLinguaPortuguesaEfService portugues, IUsuarioService usuario)
+        public BnccMatematicaEfController(
+            IBnccMatematicaEfService matematica, 
+            IBnccLinguaPortuguesaEfService portugues,
+            IUsuarioService usuario)
         {
             _matematica = matematica;
             _portugues = portugues;
@@ -758,7 +761,7 @@ namespace Puc.BnccTeste.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    return BadRequest("Erro ao efetuar o download contate o administrador do sistema");
                 }
               
                 using (var stream = new MemoryStream())
@@ -773,14 +776,14 @@ namespace Puc.BnccTeste.Api.Controllers
                     }
                     catch (Exception ex)
                     {
-                        return null;
+                        return BadRequest("Erro ao efetuar o download contate o administrador do sistema");
                     }
                 }
             }
         }
 
         [HttpPost("/api/Login")]
-        public dynamic Login([FromBody] LoginUsuario usuario)
+        public ActionResult Login([FromBody] LoginUsuario usuario)
         {            
             try
             {
@@ -800,7 +803,7 @@ namespace Puc.BnccTeste.Api.Controllers
         }
 
         [HttpPost("/api/Registrar")]
-        public dynamic Registrar([FromBody] Usuario usuario)
+        public ActionResult Registrar([FromBody] Usuario usuario)
         {         
             try
             {                 
